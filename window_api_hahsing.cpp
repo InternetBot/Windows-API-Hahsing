@@ -8,6 +8,7 @@ int main() {
 	//Declaring variables
 	int numWinApi;
 
+
 	std::cout << "Enter the Windows Api you wish to hash";
 	std::cin >> numWinApi;
 
@@ -26,16 +27,25 @@ int main() {
 	}
 
 	for (const auto& wins : winApiList) {
+		int iteration = 0;
+		unsigned int hash = 0x35;
+
 		for (char eachChar : wins) {
 			//converts to ascii
+			iteration++;
 			int asciiValue = static_cast<int>(eachChar);
 
-			//converts ascii -> hex
-			std::stringstream ws;
-			ws << std::hex << asciiValue;
-			std::string hexValue = ws.str();
+			//hashing algorithm
+			hash += (hash * 0xab10f29f + asciiValue) & 0xffffff;
 
+			std::cout << "Iteration " << iteration << " : " << eachChar
+				<< " :0x" << std::hex << asciiValue << " :0x" << hash << std::dec
+				<< std::endl;
 		}
+
+		//displays result
+		std::cout << "Final Hash for " << wins << ": 0x" << std::setfill('0')
+			<< std::setw(8) << std::hex << hash << std::dec << std::endl;
 
 	}
 	return 0;
